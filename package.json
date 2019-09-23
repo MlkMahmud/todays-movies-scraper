@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/MlkMahmud/movie-listings-api/issues"
   },
-  "homepage": "https://github.com/MlkMahmud/movie-listings-api#readme"
+  "homepage": "https://github.com/MlkMahmud/movie-listings-api#readme",
+  "devDependencies": {
+    "eslint": "^6.4.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2"
+  }
 }

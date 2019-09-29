@@ -11,9 +11,9 @@ export const movieAlreadyExists = async (collection, { title }) => {
   }
 };
 
-export const appendMovieShowtimes = async (collection, { title }, { showtimes }) => {
+export const appendMovieShowtimes = async (collection, { title }, showtimes) => {
   try {
-    await collection.update({ title }, { $push: { showtimes: { $each: showtimes } } });
+    await collection.updateOne({ title }, { $push: { showtimes: { $each: showtimes } } });
     return true;
   } catch (e) {
     console.error(e);
@@ -27,7 +27,7 @@ export const addNewMovie = async (collection, movie) => {
     return true;
   } catch (e) {
     console.error(e);
-    return false;
+    return e;
   }
 };
 

@@ -31,6 +31,7 @@ const schema = new Schema({
 
   trailer: {
     type: String,
+    default: null,
   },
 
   release_date: {
@@ -56,4 +57,5 @@ const schema = new Schema({
 
 schema.index({ title: 'text' });
 
-export default model('Movie', schema);
+export const Movie = model('Movie', schema);
+export const Temp = model('Temp', schema);

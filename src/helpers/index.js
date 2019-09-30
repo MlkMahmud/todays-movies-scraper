@@ -50,3 +50,23 @@ export const flushDB = async (collection) => {
     return false;
   }
 };
+
+export const delay = (ms) => (
+  new Promise((resolve) => {
+    setTimeout(() => resolve(), ms);
+  })
+);
+
+
+export const retry = async (fn, attempts = 3, wait = 5000) => {
+  try {
+    const response = await fn();
+    return response;
+  } catch (e) {
+    if (attempts <= 1) {
+      throw Error(e);
+    }
+    await delay(wait);
+    return retry(fn, attempts - 1);
+  }
+};

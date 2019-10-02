@@ -82,7 +82,7 @@ describe('addNewMovie', () => {
 
   it('Should not add a movie without a title', () => {
     const movie = {};
-    return expect(addNewMovie(Movie, movie)).to.eventually.have.property('_message', 'Movie validation failed');
+    return expect(addNewMovie(Movie, movie)).to.be.rejectedWith('Movie validation failed: title: Movie must have a title');
   });
 });
 

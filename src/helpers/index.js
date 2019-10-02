@@ -1,54 +1,29 @@
 export const movieAlreadyExists = async (collection, { title }) => {
-  try {
-    const results = await collection.find({ $text: { $search: title } });
-    if (results.length > 0) {
-      return true;
-    }
-    return false;
-  } catch (e) {
-    console.error(e);
-    return e;
+  const results = await collection.find({ $text: { $search: title } });
+  if (results.length > 0) {
+    return true;
   }
+  return false;
 };
 
 export const appendMovieShowtimes = async (collection, { title }, showtimes) => {
-  try {
-    await collection.updateOne({ title }, { $push: { showtimes: { $each: showtimes } } });
-    return true;
-  } catch (e) {
-    console.error(e);
-    return false;
-  }
+  await collection.updateOne({ title }, { $push: { showtimes: { $each: showtimes } } });
+  return true;
 };
 
-export const addNewMovie = async (collection, movie) => {
-  try {
-    await collection.create(movie);
-    return true;
-  } catch (e) {
-    console.error(e);
-    return e;
-  }
+export const addNewMovie = async (collection, item) => {
+  await collection.create(item);
+  return true;
 };
 
-export const seedDB = async (collection, movies = []) => {
-  try {
-    await collection.insertMany(movies);
-    return true;
-  } catch (e) {
-    console.error(e);
-    return false;
-  }
+export const seedDB = async (collection, items = []) => {
+  await collection.insertMany(items);
+  return true;
 };
 
 export const flushDB = async (collection) => {
-  try {
-    await collection.deleteMany({});
-    return true;
-  } catch (e) {
-    console.error(e);
-    return false;
-  }
+  await collection.deleteMany({});
+  return true;
 };
 
 export const delay = (ms) => (
@@ -56,7 +31,6 @@ export const delay = (ms) => (
     setTimeout(() => resolve(), ms);
   })
 );
-
 
 export const retry = async (fn, attempts = 3, wait = 5000) => {
   try {

@@ -22,6 +22,13 @@ export const getNowShowingSessions = async () => {
   return movies;
 };
 
+export const getComingSoonMovies = async () => {
+  const url = 'https://us-central1-filmhouseweb-403f1.cloudfunctions.net/api/movie/getComingSoonMovies/';
+  const response = await axios(url);
+  const movies = response.data;
+  return movies;
+};
+
 export const formatShowtimes = (showtimes = []) => (
   showtimes.map((time) => {
     const date = new Date(time);

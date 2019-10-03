@@ -1,9 +1,12 @@
 const axios = require('axios');
 
-export const getNowShowingSessions = async () => {
-  const url = 'https://us-central1-filmhouseweb-403f1.cloudfunctions.net/api/movie/getNowShowingSessions/';
+export const fetchNowShowingSessions = async () => {
+  const url = 'https://us-central1-filmhouseweb-403f1.cloudfunctions.net/api/movie/getNowShowingSessions';
   const response = await axios(url);
-  const sessions = response.data;
+  return response.data;
+};
+
+export const setNowShowingSessions = (sessions = []) => {
   const movies = {};
   for (let i = 0; i < sessions.length; i += 1) {
     const { ScheduledFilmId, CinemaId, Showtime } = sessions[i];
@@ -22,11 +25,10 @@ export const getNowShowingSessions = async () => {
   return movies;
 };
 
-export const getComingSoonMovies = async () => {
+export const fetchComingSoonMovies = async () => {
   const url = 'https://us-central1-filmhouseweb-403f1.cloudfunctions.net/api/movie/getComingSoonMovies/';
   const response = await axios(url);
-  const movies = response.data;
-  return movies;
+  return response.data;
 };
 
 export const formatShowtimes = (showtimes = []) => (
@@ -45,14 +47,19 @@ export const getTodayShowtimes = (showtimes = []) => (
   })
 );
 
-export const getMovieDetails = async (sessions = {}) => {
-  const movies = [];
+export const fetchMovieDetails = async (id) => {
   const url = 'https://us-central1-filmhouseweb-403f1.cloudfunctions.net/api/movie/getMovieDetails';
+  const details = await axios(url, { params: { movieId: id } });
+  return details.data;
+};
+
+export const setMovieDetails = async (sessions = {}, fn) => {
+  const movies = [];
   const keys = Object.keys(sessions);
   for (let i = 0; i < keys.length; i += 1) {
     // eslint-disable-next-line no-await-in-loop
-    const response = await axios(url, { params: { movieId: keys[i] } });
-    const [movie] = response.data;
+    const details = await fn(keys[i]);
+    const [movie] = details;
     movie.showtimes = [];
     const entries = Object.entries(sessions[keys[i]]);
     for (let j = 0; j < entries.length; j += 1) {
@@ -70,34 +77,40 @@ export const getMovieDetails = async (sessions = {}) => {
   return movies;
 };
 
-export const getMovieGenre = async (entries = []) => {
+export const fetchMovieGenre = async (id) => {
   const url = 'https://us-central1-filmhouseweb-403f1.cloudfunctions.net/api/movie/getGenreName';
+  const response = await axios(url, {
+    params: {
+      genreId: id,
+    },
+  });
+  return response.data;
+};
+
+export const setMovieGenre = async (entries = [], fn) => {
   const movies = [...entries];
   const genres = {};
   for (let i = 0; i < movies.length; i += 1) {
     const { GenreId: genreId } = movies[i];
     if (!(genreId in genres)) {
       // eslint-disable-next-line no-await-in-loop
-      const response = await axios.get(url, {
-        params: {
-          genreId,
-        },
-      });
-      genres[genreId] = response.data;
+      const genre = await fn(genreId);
+      genres[genreId] = genre;
     }
     movies[i].genre = [genres[genreId]];
   }
   return movies;
 };
 
-
-export const getCinemaName = async (entries = []) => {
+export const fetchCinemas = async () => {
   const url = 'https://us-central1-filmhouseweb-403f1.cloudfunctions.net/api/cinema/getCinemasLocations';
   const response = await axios(url);
   const { data } = response;
-  const cinemas = data.reduce((acc, cur) => ({ ...acc, [cur.ID]: cur.Name }), {});
-  const movies = [...entries];
+  return data.reduce((acc, cur) => ({ ...acc, [cur.ID]: cur.Name }), {});
+};
 
+export const setCinemaName = (entries = [], cinemas = []) => {
+  const movies = [...entries];
   for (let i = 0; i < movies.length; i += 1) {
     const { showtimes } = movies[i];
     for (let j = 0; j < showtimes.length; j += 1) {

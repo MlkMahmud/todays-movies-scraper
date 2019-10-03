@@ -1,21 +1,27 @@
 import {
-  getNowShowingSessions,
-  getMovieDetails,
-  getMovieGenre,
-  getCinemaName,
+  fetchNowShowingSessions,
+  setNowShowingSessions,
+  fetchMovieDetails,
+  setMovieDetails,
+  fetchMovieGenre,
+  setMovieGenre,
+  fetchCinemas,
+  setCinemaName,
   getPosterUrl,
   formatReleaseDate,
   formatRuntime,
-  getComingSoonMovies,
+  fetchComingSoonMovies,
 } from './helpers';
 
 
-export const NowShowingMovies = async () => {
+export const nowShowingMovies = async () => {
   const movies = [];
-  const movieSessions = await getNowShowingSessions();
-  const moviesWithDetails = await getMovieDetails(movieSessions);
-  const moviesWithGenre = await getMovieGenre(moviesWithDetails);
-  const moviesWithCinemaNames = await getCinemaName(moviesWithGenre);
+  const sessions = await fetchNowShowingSessions();
+  const movieSessions = await setNowShowingSessions(sessions);
+  const moviesWithDetails = await setMovieDetails(movieSessions, fetchMovieDetails);
+  const moviesWithGenre = await setMovieGenre(moviesWithDetails, fetchMovieGenre);
+  const cinemas = await fetchCinemas();
+  const moviesWithCinemaNames = setCinemaName(moviesWithGenre, cinemas);
 
   for (let i = 0; i < moviesWithCinemaNames.length; i += 1) {
     const {
@@ -39,7 +45,7 @@ export const NowShowingMovies = async () => {
 
 
 export const comingSoonMovies = async () => {
-  const payload = await getComingSoonMovies();
+  const payload = await fetchComingSoonMovies();
   const movies = [];
 
   for (let i = 0; i < payload.length; i += 1) {
@@ -60,3 +66,7 @@ export const comingSoonMovies = async () => {
   }
   return movies;
 };
+
+
+comingSoonMovies()
+  .then((e) => console.log(JSON.stringify(e)));

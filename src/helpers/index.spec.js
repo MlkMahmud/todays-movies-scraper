@@ -4,7 +4,7 @@ import chai, { expect } from 'chai';
 import promise from 'chai-as-promised';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import movies from './dummyData';
+import movies from './fixtures';
 import { Movie } from '../models/Movie';
 import {
   seedDB, flushDB, movieAlreadyExists, addNewMovie, appendMovieShowtimes,

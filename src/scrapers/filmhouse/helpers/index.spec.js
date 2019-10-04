@@ -7,7 +7,7 @@ import {
   formatRuntime,
   getTodayShowtimes,
   fetchCinemas,
-} from './helpers';
+} from '.';
 
 
 describe('formatReleaseDate', () => {

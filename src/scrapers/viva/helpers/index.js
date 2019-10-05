@@ -82,10 +82,3 @@ export const fetchComingSoonMovieInfo = async (html) => {
   }
   return movies;
 };
-
-
-fetchMoviesList()
-  .then((r) => {
-    fetchComingSoonMovieInfo(r)
-      .then((x) => console.log(x));
-  });

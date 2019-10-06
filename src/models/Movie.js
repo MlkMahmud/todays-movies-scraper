@@ -48,14 +48,13 @@ const schema = new Schema({
     type: [{}],
   },
 
-  status: {
-    type: String,
-    enum: ['Coming Soon', 'Now Showing'],
+  now_showing: {
+    type: Boolean,
+    default: false,
   },
 
 });
 
 schema.index({ title: 'text' });
 
-export const Movie = model('Movie', schema);
-export const Temp = model('Temp', schema);
+export default model('Movie', schema);

@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const movieAlreadyExists = async (collection, { title }) => {
   const results = await collection.find({ $text: { $search: title } });
   if (results.length > 0) {
@@ -42,5 +44,45 @@ export const retry = async (fn, attempts = 3, wait = 5000) => {
     }
     await delay(wait);
     return retry(fn, attempts - 1);
+  }
+};
+
+export const formatRuntime = (time) => {
+  if (!time || Number.isNaN(Number(time))) {
+    return '--';
+  }
+  const hours = Math.floor(+time / 60);
+  const mins = +time % 60;
+  return `${hours}h ${mins}m`;
+};
+
+export const formatReleaseDate = (date) => {
+  if (!date) {
+    return '--';
+  }
+  const dateString = new Date(date);
+  const { format } = new Intl.DateTimeFormat('en', { month: 'short', day: 'numeric' });
+  return format(dateString);
+};
+
+export const getDay = () => {
+  const date = new Date();
+  const { format } = new Intl.DateTimeFormat('en', { weekday: 'short' });
+  return format(date);
+};
+
+export const fetchMoviesList = async (url) => {
+  const response = await axios(url);
+  const html = response.data;
+  return html;
+};
+
+export const movieList = async (cinema) => {
+  try {
+    const movies = await retry(cinema);
+    return movies;
+  } catch (e) {
+    console.error(e);
+    return [];
   }
 };

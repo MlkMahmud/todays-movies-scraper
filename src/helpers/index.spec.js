@@ -5,9 +5,10 @@ import promise from 'chai-as-promised';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import movies from './fixtures';
-import { Movie } from '../models/Movie';
+import Movie from '../models/Movie';
 import {
-  seedDB, flushDB, movieAlreadyExists, addNewMovie, appendMovieShowtimes,
+  seedDB,
+  flushDB, movieAlreadyExists, addNewMovie, appendMovieShowtimes, formatRuntime, formatReleaseDate,
 } from './index';
 
 dotenv.config();
@@ -129,5 +130,30 @@ describe('flushDB', () => {
         });
       })
       .catch((e) => done(e));
+  });
+});
+
+
+describe('formatRuntime', () => {
+  it('Should convert runtime to a suitable format', () => {
+    const runtime = formatRuntime(100);
+    expect(runtime).to.equal('1h 40m');
+  });
+
+  it('Should return a default string if the time argument is invalid', () => {
+    const runtime = formatRuntime('');
+    expect(runtime).to.equal('--');
+  });
+});
+
+describe('formatReleaseDate', () => {
+  it('Should convert a date string to a suitable format', () => {
+    const formattedDate = formatReleaseDate('2019-10-03T00:00:00');
+    expect(formattedDate).to.equal('Oct 3');
+  });
+
+  it('Should return a default string if date value is invalid', () => {
+    const formattedDate = formatReleaseDate('');
+    expect(formattedDate).to.equal('--');
   });
 });

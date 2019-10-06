@@ -122,15 +122,3 @@ export const setCinemaName = (entries = [], cinemas = []) => {
 };
 
 export const getPosterUrl = (id) => `https://tickets.filmhouseng.com/CDN/media/entity/get/FilmPosterGraphic/${id}`;
-
-export const formatRuntime = (time) => {
-  const hours = Math.floor(time / 60);
-  const mins = time % 60;
-  return `${hours}h ${mins}m`;
-};
-
-export const formatReleaseDate = (date) => {
-  const dateString = new Date(date);
-  const { format } = new Intl.DateTimeFormat('en', { month: 'short', day: 'numeric' });
-  return format(dateString);
-};

@@ -3,26 +3,9 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import {
   formatShowtimes,
-  formatReleaseDate,
-  formatRuntime,
   getTodayShowtimes,
   fetchCinemas,
 } from '.';
-
-
-describe('formatReleaseDate', () => {
-  it('Should convert a date string to a suitable format', () => {
-    const formattedDate = formatReleaseDate('2019-10-03T00:00:00');
-    expect(formattedDate).to.equal('Oct 3');
-  });
-});
-
-describe('formatRuntime', () => {
-  it('Should convert runtime to a suitable format', () => {
-    const runtime = formatRuntime(100);
-    expect(runtime).to.equal('1h 40m');
-  });
-});
 
 describe('formatShowtimes', () => {
   it('should convert a timestamp to AM//PM format', () => {

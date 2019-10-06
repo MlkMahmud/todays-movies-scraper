@@ -1,3 +1,4 @@
+import { formatReleaseDate, formatRuntime } from '../../helpers';
 import {
   fetchNowShowingSessions,
   setNowShowingSessions,
@@ -8,16 +9,14 @@ import {
   fetchCinemas,
   setCinemaName,
   getPosterUrl,
-  formatReleaseDate,
-  formatRuntime,
   fetchComingSoonMovies,
-} from './helpers';
+} from '../../helpers/filmhouse';
 
 
 export const nowShowingMovies = async () => {
   const movies = [];
   const sessions = await fetchNowShowingSessions();
-  const movieSessions = await setNowShowingSessions(sessions);
+  const movieSessions = setNowShowingSessions(sessions);
   const moviesWithDetails = await setMovieDetails(movieSessions, fetchMovieDetails);
   const moviesWithGenre = await setMovieGenre(moviesWithDetails, fetchMovieGenre);
   const cinemas = await fetchCinemas();
@@ -37,7 +36,7 @@ export const nowShowingMovies = async () => {
       release_date: formatReleaseDate(OpeningDate),
       runtime: formatRuntime(RunTime),
       showtimes,
-      status: 'Now Showing',
+      now_showing: true,
     });
   }
   return movies;
@@ -45,13 +44,13 @@ export const nowShowingMovies = async () => {
 
 
 export const comingSoonMovies = async () => {
-  const payload = await fetchComingSoonMovies();
+  const entries = await fetchComingSoonMovies();
   const movies = [];
 
-  for (let i = 0; i < payload.length; i += 1) {
+  for (let i = 0; i < entries.length; i += 1) {
     const {
       RunTime, Title, ScheduledFilmId, OpeningDate, Synopsis, TrailerUrl, Rating,
-    } = payload[i];
+    } = entries[i];
 
     movies.push({
       title: Title,
@@ -61,12 +60,8 @@ export const comingSoonMovies = async () => {
       trailer: TrailerUrl,
       release_date: formatReleaseDate(OpeningDate),
       runtime: formatRuntime(RunTime),
-      status: 'Coming Soon',
+      now_showing: false,
     });
   }
   return movies;
 };
-
-
-comingSoonMovies()
-  .then((e) => console.log(JSON.stringify(e)));

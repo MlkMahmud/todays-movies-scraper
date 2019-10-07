@@ -1,20 +1,20 @@
 /* eslint-disable no-await-in-loop */
-import axios from 'axios';
 import cheerio from 'cheerio';
 import {
-  fetchMoviesList, getDay, formatReleaseDate, formatRuntime,
+  fetch, getDay, formatReleaseDate, formatRuntime,
 } from '../../helpers';
 
-export const fetchNowShowingMovieDetails = async () => {
+export const nowShowingMovies = async () => {
   const movies = [];
-  const html = await fetchMoviesList('https://grandcinemas.com.ng/now-showing/');
-  if (html) {
-    const $ = cheerio.load(html);
+  const movieList = await fetch('https://grandcinemas.com.ng/now-showing/');
+  if (movieList) {
+    const $ = cheerio.load(movieList);
     const entries = $(`div#${getDay()} .movie-tabs`);
     for (let i = 0; i < entries.length; i += 1) {
       const movie = entries[i];
-      const entry = await axios($(movie).find('p > a.arrow-button').attr('href'));
-      const $$ = cheerio.load(entry.data);
+      const url = $(movie).find('p > a.arrow-button').attr('href');
+      const entry = await fetch(url);
+      const $$ = cheerio.load(entry);
       movies.push({
         title: $(movie).find('header > h3').text(),
         synopsis: $$('div.plot > p').text(),
@@ -49,20 +49,20 @@ export const fetchNowShowingMovieDetails = async () => {
   return movies;
 };
 
-export const fetchComingSoonMovieDetails = async () => {
+export const comingSoonMovies = async () => {
   const movies = [];
   const pages = 2;
 
   for (let i = 1; i <= pages; i += 1) {
-    const html = await fetchMoviesList(`https://grandcinemas.com.ng/movie-categories/coming-soon/page/${i}/`);
-    if (html) {
-      const $ = cheerio.load(html);
+    const movieList = await fetch(`https://grandcinemas.com.ng/movie-categories/coming-soon/page/${i}/`);
+    if (movieList) {
+      const $ = cheerio.load(movieList);
       const entries = $('div.movie-tabs');
 
       for (let j = 0; j < entries.length; j += 1) {
         const url = $(entries[j]).find('a:nth-of-type(1)').attr('href');
-        const entry = await axios(url);
-        const $$ = cheerio.load(entry.data);
+        const entry = await fetch(url);
+        const $$ = cheerio.load(entry);
 
         movies.push({
           title: $$('header > h1').text(),

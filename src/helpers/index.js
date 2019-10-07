@@ -71,11 +71,10 @@ export const getDay = () => {
   return format(date);
 };
 
-export const fetchMoviesList = async (url) => {
+export const fetch = async (url) => {
   try {
     const response = await axios(url);
-    const html = response.data;
-    return html;
+    return response.data;
   } catch (e) {
     // Handle 404 errors
     if (e.message === 'Request failed with status code 404') {

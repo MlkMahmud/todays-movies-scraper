@@ -1,20 +1,19 @@
 /* eslint-disable no-await-in-loop */
-import axios from 'axios';
 import cheerio from 'cheerio';
 import {
-  formatRuntime, formatReleaseDate, getDay, fetchMoviesList,
+  formatRuntime, formatReleaseDate, getDay, fetch,
 } from '../../helpers';
 
 
-export const fetchNowShowingMovieDetails = async () => {
-  const html = await fetchMoviesList('https://vivacinemas.com');
+export const nowShowingMovies = async () => {
+  const html = await fetch('https://vivacinemas.com');
   const $ = cheerio.load(html);
   const entries = $(`div#${getDay()} div.row.movie-tabs`);
   const movies = [];
   for (let i = 0; i < entries.length; i += 1) {
     const url = $(entries[i]).find('p > a.arrow-button').attr('href');
-    const movieInfo = await axios(url);
-    const $$ = cheerio.load(movieInfo.data);
+    const entry = await fetch(url);
+    const $$ = cheerio.load(entry);
     const movie = {
       title: $$('header > h1').text(),
       synopsis: $$('div.plot > p').text(),
@@ -29,10 +28,10 @@ export const fetchNowShowingMovieDetails = async () => {
       now_showing: true,
     };
 
-    $(entries[i]).find(`div.${getDay().toLowerCase()}-time`).each((index, entry) => {
+    $(entries[i]).find(`div.${getDay().toLowerCase()}-time`).each((index, item) => {
       movie.showtimes.push({
-        cinema: `Viva Cinemas, ${$(entry).find('label.mtime').text()}`,
-        time: $(entry)
+        cinema: `Viva Cinemas, ${$(item).find('label.mtime').text()}`,
+        time: $(item)
           .find('span.time')
           .text().trim()
           .replace(/\t/g, '')
@@ -44,16 +43,16 @@ export const fetchNowShowingMovieDetails = async () => {
   return movies;
 };
 
-export const fetchComingSoonMovieDetails = async () => {
-  const html = await fetchMoviesList('https://vivacinemas.com');
+export const comingSoonMovies = async () => {
+  const html = await fetch('https://vivacinemas.com');
   const $ = cheerio.load(html);
   const movies = [];
   const entries = $('div.comingSoon-slides div.single-slide');
 
   for (let i = 0; i < entries.length; i += 1) {
     const url = $(entries[i]).find('p > a.arrow-button').attr('href');
-    const movieInfo = await axios(url);
-    const $$ = cheerio.load(movieInfo.data);
+    const entry = await fetch(url);
+    const $$ = cheerio.load(entry);
     movies.push({
       title: $$('header > h1').text(),
       synopsis: $$('div.plot > p').text(),

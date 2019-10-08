@@ -57,7 +57,7 @@ export const formatRuntime = (time) => {
 };
 
 export const formatReleaseDate = (date) => {
-  if (!date) {
+  if (!date || Number.isNaN(Date.parse(date))) {
     return '--';
   }
   const dateString = new Date(date);

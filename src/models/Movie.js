@@ -7,7 +7,8 @@ const schema = new Schema({
   },
 
   starring: {
-    type: [String],
+    type: String,
+    default: '--',
   },
 
   synopsis: {

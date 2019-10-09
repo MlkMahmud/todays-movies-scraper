@@ -1,10 +1,10 @@
 /* eslint-disable no-await-in-loop */
 import cheerio from 'cheerio';
 import {
-  fetch, getDay, formatReleaseDate, formatRuntime,
+  list, fetch, getDay, formatReleaseDate, formatRuntime,
 } from '../../helpers';
 
-export const nowShowingMovies = async () => {
+const nowShowingMovies = async () => {
   const movies = [];
   const movieList = await fetch('https://grandcinemas.com.ng/now-showing/');
   if (movieList) {
@@ -49,21 +49,18 @@ export const nowShowingMovies = async () => {
   return movies;
 };
 
-export const comingSoonMovies = async () => {
+const comingSoonMovies = async () => {
   const movies = [];
   const pages = 2;
-
   for (let i = 1; i <= pages; i += 1) {
     const movieList = await fetch(`https://grandcinemas.com.ng/movie-categories/coming-soon/page/${i}/`);
     if (movieList) {
       const $ = cheerio.load(movieList);
       const entries = $('div.movie-tabs');
-
       for (let j = 0; j < entries.length; j += 1) {
         const url = $(entries[j]).find('a:nth-of-type(1)').attr('href');
         const entry = await fetch(url);
         const $$ = cheerio.load(entry);
-
         movies.push({
           title: $$('header > h1').text(),
           synopsis: $$('div.plot > p').text(),
@@ -81,3 +78,5 @@ export const comingSoonMovies = async () => {
   }
   return movies;
 };
+
+export default [list(nowShowingMovies), list(comingSoonMovies)];

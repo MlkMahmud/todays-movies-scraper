@@ -1,16 +1,15 @@
 /* eslint-disable no-await-in-loop */
 import cheerio from 'cheerio';
-import { fetch, formatReleaseDate } from '../../helpers';
+import { list, fetch, formatReleaseDate } from '../../helpers';
 import { filterForeignCinemas, formatRuntime } from '../../helpers/silverbird';
 
-export const nowShowingMovies = async () => {
+const nowShowingMovies = async () => {
   const movies = [];
   for (let page = 1; page <= 2; page += 1) {
     const movieList = await fetch(`https://silverbirdcinemas.com/page/${page}/`);
     if (movieList) {
       const $ = cheerio.load(movieList);
       const entries = $('div.active article.entry-item');
-
       for (let i = 0; i < entries.length; i += 1) {
         const entryURL = $(entries[i]).find('div.entry-button > a').attr('href');
         const entry = await fetch(entryURL);
@@ -29,7 +28,7 @@ export const nowShowingMovies = async () => {
           now_showing: true,
         });
 
-        const rgx = /\w+((\/|\-)\w+)*: (\d{1,2}:\d{1,2}(am|pm)(,\s)?)+/g
+        const rgx = /\w+((\/|-)\w+)*: (\d{1,2}:\d{1,2}(am|pm)(,\s)?)+/g;
         $$('div.movie_showtime_block h4').each((index, element) => {
           movies[movies.length - 1].showtimes.push({
             cinema: $$(element).text(),
@@ -48,7 +47,7 @@ export const nowShowingMovies = async () => {
 };
 
 
-export const comingSoonMovies = async () => {
+const comingSoonMovies = async () => {
   const movies = [];
   const movieList = await fetch('https://silverbirdcinemas.com/coming-soon/');
   if (movieList) {
@@ -74,3 +73,5 @@ export const comingSoonMovies = async () => {
   }
   return movies;
 };
+
+export default [list(nowShowingMovies), list(comingSoonMovies)];

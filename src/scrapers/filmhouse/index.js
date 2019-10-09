@@ -1,4 +1,4 @@
-import { formatReleaseDate, formatRuntime } from '../../helpers';
+import { formatReleaseDate, formatRuntime, list } from '../../helpers';
 import {
   fetchNowShowingSessions,
   setNowShowingSessions,
@@ -13,7 +13,7 @@ import {
 } from '../../helpers/filmhouse';
 
 
-export const nowShowingMovies = async () => {
+const nowShowingMovies = async () => {
   const movies = [];
   const sessions = await fetchNowShowingSessions();
   const movieSessions = setNowShowingSessions(sessions);
@@ -43,7 +43,7 @@ export const nowShowingMovies = async () => {
 };
 
 
-export const comingSoonMovies = async () => {
+const comingSoonMovies = async () => {
   const entries = await fetchComingSoonMovies();
   const movies = [];
 
@@ -65,3 +65,5 @@ export const comingSoonMovies = async () => {
   }
   return movies;
 };
+
+export default [list(nowShowingMovies), list(comingSoonMovies)];

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "nyc mocha **/*.spec.js --timeout 20000 --exit -r @babel/register,@babel/polyfill",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "dev": "babel-node index"
+    "dev": "babel-node src/"
   },
   "repository": {
     "type": "git",
@@ -38,6 +38,7 @@
   "dependencies": {
     "axios": "^0.19.0",
     "cheerio": "^1.0.0-rc.3",
+    "cron": "^1.7.2",
     "dotenv": "^8.1.0",
     "mongoose": "^5.7.1"
   }

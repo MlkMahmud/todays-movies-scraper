@@ -4,7 +4,6 @@ import { expect } from 'chai';
 import {
   formatShowtimes,
   getTodayShowtimes,
-  fetchCinemas,
 } from '.';
 
 describe('formatShowtimes', () => {
@@ -35,18 +34,5 @@ describe('getTodayShowtimes', () => {
       const date = new Date();
       expect(date.toDateString()).to.equal(new Date(time).toDateString());
     });
-  });
-});
-
-
-describe('fetchCinemas', () => {
-  it('Should return an array containing all Filmhouse cinemas', (done) => {
-    fetchCinemas()
-      .then((cinemas) => {
-        expect(cinemas).to.have.property('1001', 'Filmhouse Lekki');
-        expect(cinemas).to.have.property('1002', 'Filmhouse Benin');
-        done();
-      })
-      .catch((e) => done(e));
   });
 });

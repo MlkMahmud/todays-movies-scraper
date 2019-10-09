@@ -1,11 +1,11 @@
 /* eslint-disable no-await-in-loop */
 import cheerio from 'cheerio';
 import {
-  formatRuntime, formatReleaseDate, getDay, fetch,
+  formatRuntime, formatReleaseDate, getDay, fetch, list,
 } from '../../helpers';
 
 
-export const nowShowingMovies = async () => {
+const nowShowingMovies = async () => {
   const html = await fetch('https://vivacinemas.com');
   const $ = cheerio.load(html);
   const entries = $(`div#${getDay()} div.row.movie-tabs`);
@@ -43,7 +43,7 @@ export const nowShowingMovies = async () => {
   return movies;
 };
 
-export const comingSoonMovies = async () => {
+const comingSoonMovies = async () => {
   const html = await fetch('https://vivacinemas.com');
   const $ = cheerio.load(html);
   const movies = [];
@@ -72,3 +72,5 @@ export const comingSoonMovies = async () => {
   }
   return movies;
 };
+
+export default [list(nowShowingMovies), list(comingSoonMovies)];

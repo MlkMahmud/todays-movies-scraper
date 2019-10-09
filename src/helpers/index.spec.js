@@ -30,7 +30,7 @@ before((done) => {
 
 describe('seedDB', () => {
   it('Should add multiple documents to the database', (done) => {
-    seedDB(Movie, movies)
+    seedDB(movies)
       .then((result) => {
         expect(result).to.be.true;
         Movie.find({}, (err, docs) => {
@@ -46,7 +46,7 @@ describe('seedDB', () => {
 describe('movieAlreadyExists', () => {
   it('Should return false if a given movie is not in the movie collection', (done) => {
     const movie = { title: 'Shawshank Redemption' };
-    movieAlreadyExists(Movie, movie)
+    movieAlreadyExists(movie)
       .then((result) => {
         expect(result).to.be.false;
         done();
@@ -56,7 +56,7 @@ describe('movieAlreadyExists', () => {
 
   it('Should return true if a given movie is in the movie collection', (done) => {
     const movie = { title: 'It: Chapter Two' };
-    movieAlreadyExists(Movie, movie)
+    movieAlreadyExists(movie)
       .then((result) => {
         expect(result).to.be.true;
         done();
@@ -69,10 +69,10 @@ describe('movieAlreadyExists', () => {
 describe('addNewMovie', () => {
   it('Should add a new movie to the movie collection', (done) => {
     const movie = { title: 'Gemini Man' };
-    addNewMovie(Movie, movie)
+    addNewMovie(movie)
       .then((result) => {
         expect(result).to.be.true;
-        movieAlreadyExists(Movie, movie)
+        movieAlreadyExists(movie)
           .then((response) => {
             expect(response).to.be.true;
             done();
@@ -83,7 +83,7 @@ describe('addNewMovie', () => {
 
   it('Should not add a movie without a title', () => {
     const movie = {};
-    return expect(addNewMovie(Movie, movie)).to.be.rejectedWith('Movie validation failed: title: Movie must have a title');
+    return expect(addNewMovie(movie)).to.be.rejectedWith('Movie validation failed: title: Movie must have a title');
   });
 });
 
@@ -101,10 +101,10 @@ describe('appendMovieShowtimes', () => {
       },
     ];
     const movie = { title: 'Gemini Man' };
-    appendMovieShowtimes(Movie, movie, showtimes)
+    appendMovieShowtimes(movie, showtimes)
       .then((result) => {
         expect(result).to.true;
-        Movie.findOne(movie, (err, doc) => {
+        Movie.findOne((err, doc) => {
           expect(err).to.be.null;
           expect(doc.showtimes).to.have.lengthOf(2);
           doc.showtimes.forEach((showtime) => {

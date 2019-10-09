@@ -1,7 +1,7 @@
 export default [
   {
     title: 'It: Chapter Two',
-    starring: ['Jessica Chastain', 'Bill Hader', 'Jack Ryan'],
+    starring: 'Jessica Chastain, Bill Hader, Jack Ryan',
     release_date: 'September 6',
     status: 'Now Showing',
     runtime: '2h 55m',
@@ -24,7 +24,7 @@ export default [
   },
   {
     title: 'Fast and Furious Presents: Hobbs & Shaw',
-    starring: ['Dwayne Johnson', 'Idris Elba', 'Jason Statham'],
+    starring: 'Dwayne Johnson, Idris Elba, Jason Statham',
     release_date: 'August 2',
     status: 'Now Showing',
     runtime: '2h 15m',
@@ -47,7 +47,7 @@ export default [
   },
   {
     title: 'Joker',
-    starring: ['Joaquin Phoenix', 'Zazie Beetz', 'Robert De Niro'],
+    starring: 'Joaquin Phoenix, Zazie Beetz, Robert De Niro',
     release_date: 'October 4',
     status: 'Coming Soon',
     runtime: '2h 2m',

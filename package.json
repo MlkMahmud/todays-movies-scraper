@@ -6,7 +6,8 @@
   "scripts": {
     "test": "nyc mocha **/*.spec.js --timeout 20000 --exit -r @babel/register,@babel/polyfill",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "dev": "babel-node src/"
+    "dev": "babel-node src/",
+    "build": "babel src --out-dir dist --ignore **/*.spec.js"
   },
   "repository": {
     "type": "git",

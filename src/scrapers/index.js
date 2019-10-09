@@ -38,4 +38,4 @@ const scraper = async () => {
   console.timeEnd('Duration');
 };
 
-export default scraper;
+scraper();

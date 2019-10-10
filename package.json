@@ -1,0 +1,45 @@
+{
+  "name": "movie-listings-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc mocha **/*.spec.js --timeout 20000 --exit -r @babel/register,@babel/polyfill",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "dev": "babel-node src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MlkMahmud/movie-listings-api.git"
+  },
+  "keywords": [],
+  "author": "Malik Mahmud <almalikmahmud@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MlkMahmud/movie-listings-api/issues"
+  },
+  "homepage": "https://github.com/MlkMahmud/movie-listings-api#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.6.0",
+    "@babel/core": "^7.6.0",
+    "@babel/node": "^7.6.1",
+    "@babel/polyfill": "^7.6.0",
+    "@babel/preset-env": "^7.6.0",
+    "@babel/register": "^7.6.0",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "coveralls": "^3.0.6",
+    "eslint": "^6.4.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "mocha": "^6.2.0",
+    "nyc": "^14.1.1"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "cheerio": "^1.0.0-rc.3",
+    "cron": "^1.7.2",
+    "dotenv": "^8.1.0",
+    "mongoose": "^5.7.1"
+  }
+}

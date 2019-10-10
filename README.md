@@ -9,3 +9,6 @@ At exactly 9am everday, this automated web scraper retrieves a detailed list of 
 - [Axios](https://npmjs.com/package/axios)
 - [Cheerio](http://cheerio.js.org/)
 - [Mongoose](http://mongoosejs.com)
+
+## License
+[MIT](./LICENSE)

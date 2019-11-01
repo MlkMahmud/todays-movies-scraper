@@ -18,8 +18,7 @@ const options = {
 };
 const uri = process.env.DB_URL;
 
-const scraper = async () => {
-  console.time('Duration');
+export const scraper = async () => {
   await mongoose.connect(uri, options);
   const movies = await Promise.all([...viva, ...grand, ...filmhouse, ...silverbird]);
   await flushDB();
@@ -35,7 +34,4 @@ const scraper = async () => {
       }
     }
   }
-  console.timeEnd('Duration');
 };
-
-scraper();

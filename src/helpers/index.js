@@ -129,7 +129,7 @@ export const flushFirestore = async () => {
   }
 };
 
-export const seedFireStore = async (movies = []) => {
+export const seedFirestore = async (movies = []) => {
   try {
     const db = admin.firestore().collection('movies');
     const batch = admin.firestore().batch();

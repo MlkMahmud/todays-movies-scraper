@@ -2,7 +2,7 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import {
-  addNewMovie, movieAlreadyExists, flushDB, appendMovieShowtimes,
+  addNewMovie, movieAlreadyExists, flushDB, appendMovieShowtimes, getAllMovies, flushFirestore, seedFirestore,
 } from '../helpers';
 import filmhouse from './filmhouse';
 import viva from './viva';
@@ -19,7 +19,6 @@ const options = {
 const uri = process.env.DB_URL;
 
 const scraper = async () => {
-  console.time('Duration');
   await mongoose.connect(uri, options);
   const movies = await Promise.all([...viva, ...grand, ...filmhouse, ...silverbird]);
   await flushDB();
@@ -35,7 +34,20 @@ const scraper = async () => {
       }
     }
   }
-  console.timeEnd('Duration');
 };
 
-scraper();
+
+console.time('Duration')
+scraper()
+  .then(() => {
+    getAllMovies().then((movies) => {
+      flushFirestore()
+        .then((flushed) => {
+          if (flushed) {
+            seedFirestore(movies)
+              .then(() => console.timeEnd('Duration'));
+          }
+        })
+    })
+  })
+  .catch(e => console.error('Failed to write to firestore', e));

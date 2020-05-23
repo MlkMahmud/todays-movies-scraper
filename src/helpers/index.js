@@ -1,27 +1,18 @@
 import axios from 'axios';
-import Movie from '../models/Movie';
 import dotenv from 'dotenv';
-import admin from 'firebase-admin';
+
+import Movie from '../models/Movie';
+
 
 dotenv.config();
 
-admin.initializeApp({
-  credential: admin.credential.cert({
-    projectId: process.env.PROJECT_ID,
-    clientEmail: process.env.CLIENT_EMAIL,
-    privateKey: process.env.PRIVATE_KEY.replace(/\\n/g, '\n'),
-  }),
-  databaseURL: process.env.DB_URI,
-});
 
+export const getAllMovies = async () => Movie.find({});
 
-export const getAllMovies = async () => {
-  return await Movie.find({});
-};
 
 export const movieAlreadyExists = async ({ title }) => {
   const results = await Movie.find({ $text: { $search: title } });
-  if (results.length > 0) {
+  if (results.length) {
     return true;
   }
   return false;
@@ -73,7 +64,7 @@ export const formatRuntime = (time) => {
     return '--';
   }
   const hours = Math.floor(+time / 60);
-  const mins = +time % 60;
+  const mins = Math.floor(+time % 60);
   return `${hours}h ${mins}m`;
 };
 
@@ -112,34 +103,5 @@ export const list = async (cinema) => {
   } catch (e) {
     console.error(e);
     return [];
-  }
-};
-
-export const flushFirestore = async () => {
-  try {
-    const db = admin.firestore();
-    const batch = db.batch();
-    const { docs } = await db.collection('movies').get();
-    docs.forEach((doc) => batch.delete(doc.ref));
-    await batch.commit();
-    return true;
-  } catch (e) {
-    console.error(e);
-    return false;
-  }
-};
-
-export const seedFirestore = async (movies = []) => {
-  try {
-    const db = admin.firestore().collection('movies');
-    const batch = admin.firestore().batch();
-    movies.forEach(({ title, now_showing, showtimes, rating, runtime, genre, starring, poster, trailer, release_date, synopsis }, i) => {
-      const ref = db.doc(title);
-      batch.set(ref, { id: i + 1, title, now_showing, showtimes, rating, runtime, genre, starring, poster, trailer, release_date, synopsis })
-    });
-    await batch.commit();
-    return true;
-  } catch (e) {
-    console.error(e);
   }
 };

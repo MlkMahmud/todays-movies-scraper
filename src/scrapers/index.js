@@ -1,8 +1,9 @@
 /* eslint-disable no-await-in-loop */
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+
 import {
-  addNewMovie, movieAlreadyExists, flushDB, appendMovieShowtimes, getAllMovies, flushFirestore, seedFirestore,
+  addNewMovie, movieAlreadyExists, flushDB, appendMovieShowtimes,
 } from '../helpers';
 import filmhouse from './filmhouse';
 import viva from './viva';
@@ -37,17 +38,8 @@ const scraper = async () => {
 };
 
 
-console.time('Duration')
+console.time('Duration');
 scraper()
-  .then(() => {
-    getAllMovies().then((movies) => {
-      flushFirestore()
-        .then((flushed) => {
-          if (flushed) {
-            seedFirestore(movies)
-              .then(() => console.timeEnd('Duration'));
-          }
-        })
-    })
-  })
-  .catch(e => console.error('Failed to write to firestore', e));
+  .then(() => console.log('Success'))
+  .catch((e) => console.error(`Failed with error: ${e}`))
+  .finally(() => console.timeEnd('Duration'));

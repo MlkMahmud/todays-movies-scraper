@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/",
+    "start": "node dist/server",
     "test": "nyc mocha **/*.spec.js --timeout 20000 --exit -r @babel/register,@babel/polyfill",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "dev": "babel-node src/",
+    "dev": "babel-node src/server",
     "build": "babel src --out-dir dist --ignore **/*.spec.js"
   },
   "repository": {

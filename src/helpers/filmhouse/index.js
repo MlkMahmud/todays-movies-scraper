@@ -1,4 +1,5 @@
-const axios = require('axios');
+import axios from 'axios';
+
 
 export const fetchNowShowingSessions = async () => {
   const url = 'https://us-central1-filmhouseweb-403f1.cloudfunctions.net/api/movie/getNowShowingSessions';

@@ -8,6 +8,7 @@ export const formatRuntime = (runtime) => {
   return `${hours}h ${mins}m`;
 };
 
+
 export const filterForeignCinemas = (showtimes = []) => (
-  showtimes.filter(({ cinema }) => !cinema.endsWith('GHANA'))
+  [...showtimes].filter(({ cinema }) => !cinema.endsWith('GHANA'))
 );

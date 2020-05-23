@@ -4,12 +4,14 @@ import chai, { expect } from 'chai';
 import promise from 'chai-as-promised';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+
 import movies from './fixtures';
 import Movie from '../models/Movie';
 import {
   seedDB,
   flushDB, movieAlreadyExists, addNewMovie, appendMovieShowtimes, formatRuntime, formatReleaseDate,
 } from './index';
+
 
 dotenv.config();
 chai.use(promise);
@@ -104,7 +106,7 @@ describe('appendMovieShowtimes', () => {
     appendMovieShowtimes(movie, showtimes)
       .then((result) => {
         expect(result).to.true;
-        Movie.findOne((err, doc) => {
+        Movie.findOne(movie, (err, doc) => {
           expect(err).to.be.null;
           expect(doc.showtimes).to.have.lengthOf(2);
           doc.showtimes.forEach((showtime) => {

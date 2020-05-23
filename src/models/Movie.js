@@ -27,7 +27,7 @@ const schema = new Schema({
 
   poster: {
     type: String,
-    default: 'cloudinarylink',
+    default: '---',
   },
 
   trailer: {

@@ -26,7 +26,11 @@ const nowShowingMovies = async () => {
         rating: $(movie).find('span.certificate').text(),
         poster: $(movie).find('a > img').attr('src'),
         trailer: $$('a[data-vbtype="video"]').attr('href'),
-        starring: $$('ul.movie-info li:nth-of-type(2)').text().trim().substr(9),
+        starring: $$('ul.movie-info li:nth-of-type(2)')
+          .text()
+          .trim()
+          .substr(8)
+          .trim(),
         release_date: formatReleaseDate($$('ul.movie-info li:nth-of-type(3)').text().substr(9)),
         runtime: formatRuntime($(movie)
           .find('div.running-time')
